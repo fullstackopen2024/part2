@@ -10,7 +10,7 @@ const Course = ({course}) => {
         <>
             <Header heading={course.name}/>
             <Content parts={course.parts}/>
-            <div>total of {getTotalNumberOfExcecises(course.parts)} exercises</div>
+            <b>total of {getTotalNumberOfExcecises(course.parts)} exercises</b>
         </>
     )
 }
