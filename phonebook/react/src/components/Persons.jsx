@@ -1,6 +1,11 @@
+import Person from "./Person.jsx";
+
 const Persons = ({persons}) => {
     return (
-        persons.map(person => <div key={person.id}>{person.name} {person.number}</div>)
+        <>
+            <h2>Numbers</h2>
+            {persons.map(person => <Person key={person.id} person={person}/>)}
+        </>
     )
 }
 
