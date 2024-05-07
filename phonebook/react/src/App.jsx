@@ -45,6 +45,10 @@ function App() {
         setNewNumber('')
     }
 
+    function handlePersonDelete(id) {
+        personService.deletePerson(id).then(() => setPersons(persons.filter(person => person.id !== id)))
+    }
+
     return (
         <div>
             <h2>Phonebook</h2>
@@ -52,7 +56,7 @@ function App() {
             <PersonForm nameValue={newName} handleNameChange={handleNameChange}
                         numberValue={newNumber} handleNumberChange={handleNumberChange}
                         handleFromSubmit={handleFromSubmit}/>
-            <Persons persons={search === '' ? persons : searchPersons}/>
+            <Persons persons={search === '' ? persons : searchPersons} handlePersonDelete={handlePersonDelete}/>
         </div>
     )
 }
