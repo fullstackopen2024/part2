@@ -2,13 +2,13 @@ import {useEffect, useState} from "react";
 import Persons from "./components/Persons.jsx";
 import SearchFilter from "./components/SearchFilter.jsx";
 import PersonForm from "./components/PersonForm.jsx";
-import axios from "axios";
+import personService from "./services/persons.js"
 
 function App() {
     const [persons, setPersons] = useState([])
 
     useEffect(() => {
-        axios.get("http://localhost:3001/persons").then(response => setPersons(response.data))
+        personService.getPersons().then(response => setPersons(response.data))
     }, []);
 
     const [newName, setNewName] = useState('')
@@ -39,8 +39,8 @@ function App() {
         }
         const newPerson = {name: newName, number: newNumber};
 
-        axios.post("http://localhost:3001/persons", newPerson)
-            .then(response => setPersons(persons.concat(response.data)))
+
+        personService.addPerson(newPerson).then(response => setPersons(persons.concat(response.data)))
         setNewName('')
         setNewNumber('')
     }
