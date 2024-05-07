@@ -3,6 +3,7 @@ import Persons from "./components/Persons.jsx";
 import SearchFilter from "./components/SearchFilter.jsx";
 import PersonForm from "./components/PersonForm.jsx";
 import personService from "./services/persons.js"
+import Notification from "./components/Notification.jsx";
 
 function App() {
     const [persons, setPersons] = useState([])
@@ -15,6 +16,7 @@ function App() {
     const [newNumber, setNewNumber] = useState('')
     const [search, setSearch] = useState('')
     const [searchPersons, setSearchPersons] = useState(persons)
+    const [notificationMessage, setNotificationMessage] = useState()
 
     function handleNameChange(event) {
         setNewName(event.target.value)
@@ -49,7 +51,11 @@ function App() {
         }
 
         const newPerson = {name: newName, number: newNumber};
-        personService.addPerson(newPerson).then(response => setPersons(persons.concat(response.data)))
+        personService.addPerson(newPerson).then(response => {
+            setPersons(persons.concat(response.data))
+            setNotificationMessage(`Successfully added person ${response.data.name}`)
+            setTimeout(() => setNotificationMessage(null), 5000)
+        })
         setNewName('')
         setNewNumber('')
     }
@@ -61,6 +67,7 @@ function App() {
     return (
         <div>
             <h2>Phonebook</h2>
+            <Notification message={notificationMessage}/>
             <SearchFilter value={search} handleSearchChange={handleSearchChange}/>
             <PersonForm nameValue={newName} handleNameChange={handleNameChange}
                         numberValue={newNumber} handleNumberChange={handleNumberChange}
