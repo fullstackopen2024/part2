@@ -33,13 +33,22 @@ function App() {
 
     function handleFromSubmit(event) {
         event.preventDefault()
-        if (persons.find(person => person.name === newName)) {
-            alert(`${newName} is already added to phonebook`)
+
+        const existingPerson = persons.find(person => person.name === newName)
+        if (existingPerson) {
+            if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one ?`)) {
+                const updatedPerson = {...existingPerson, number: newNumber};
+                personService.updatePerson(updatedPerson).then(response => {
+                    const updatedPersonFromServer = response.data;
+                    setPersons(persons.map(p => p.id === updatedPersonFromServer.id ? updatedPersonFromServer : p))
+                })
+            }
+            setNewName('')
+            setNewNumber('')
             return;
         }
+
         const newPerson = {name: newName, number: newNumber};
-
-
         personService.addPerson(newPerson).then(response => setPersons(persons.concat(response.data)))
         setNewName('')
         setNewNumber('')
