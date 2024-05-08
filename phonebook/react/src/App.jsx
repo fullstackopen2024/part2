@@ -67,7 +67,7 @@ function App() {
     return (
         <div>
             <h2>Phonebook</h2>
-            <Notification message={notificationMessage}/>
+            {notificationMessage ? <Notification message={notificationMessage}/> : null}
             <SearchFilter value={search} handleSearchChange={handleSearchChange}/>
             <PersonForm nameValue={newName} handleNameChange={handleNameChange}
                         numberValue={newNumber} handleNumberChange={handleNumberChange}
