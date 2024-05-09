@@ -20,12 +20,12 @@ const Countries = ({countries}) => {
             {countries.length <= 10 && countries.length > 1
                 && countries.map(country => {
                         return (
-                            <>
-                                <CountryShort key={country.fifa} country={country}
+                            <div key={country.fifa}>
+                                <CountryShort country={country}
                                               handleButtonClick={handleShowButtonClick}/>
                                 {toShowCountries.includes(country.name.common) &&
-                                    <CountryDetails key={country.fifa + '2'} country={country}/>}
-                            </>
+                                    <CountryDetails country={country}/>}
+                            </div>
                         )
                     }
                 )}

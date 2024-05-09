@@ -1,3 +1,5 @@
+import WeatherDisplay from "./WeatherDisplay.jsx";
+
 const CountryDetails = ({country}) => {
     return (
         <>
@@ -11,6 +13,7 @@ const CountryDetails = ({country}) => {
                 .map(([key, value]) => (<li key={key}>{value}</li>))}
             </ul>
             <img src={country.flags.png}/>
+            <WeatherDisplay city={country.capital[0]}/>
         </>
     )
 
