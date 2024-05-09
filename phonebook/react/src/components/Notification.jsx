@@ -1,9 +1,9 @@
 import '../styles.css'
 
-const Notification = ({message}) => {
+const Notification = ({notification}) => {
     return (
-        <div className='success'>
-            {message}
+        <div className={notification.type === 'error' ? 'notification error' : 'notification success'}>
+            {notification.message}
         </div>
     )
 }

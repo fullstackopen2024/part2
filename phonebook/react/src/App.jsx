@@ -18,6 +18,20 @@ function App() {
     const [searchPersons, setSearchPersons] = useState(persons)
     const [notificationMessage, setNotificationMessage] = useState()
 
+    const successfullyAddedPersonNotification = (name) => {
+        return {
+            message: `Successfully added person ${name}`,
+            type: 'success'
+        }
+    }
+
+    const errorPersonRemovedFromServer = (name) => {
+        return {
+            message: `Information of ${name} has already been removed from server`,
+            type: 'error'
+        }
+    }
+
     function handleNameChange(event) {
         setNewName(event.target.value)
     }
@@ -44,6 +58,10 @@ function App() {
                     const updatedPersonFromServer = response.data;
                     setPersons(persons.map(p => p.id === updatedPersonFromServer.id ? updatedPersonFromServer : p))
                 })
+                    .catch(() => {
+                        setNotificationMessage(errorPersonRemovedFromServer(existingPerson.name))
+                        personService.getPersons().then(response => setPersons(response.data))
+                    })
             }
             setNewName('')
             setNewNumber('')
@@ -53,7 +71,8 @@ function App() {
         const newPerson = {name: newName, number: newNumber};
         personService.addPerson(newPerson).then(response => {
             setPersons(persons.concat(response.data))
-            setNotificationMessage(`Successfully added person ${response.data.name}`)
+
+            setNotificationMessage(successfullyAddedPersonNotification(response.data.name))
             setTimeout(() => setNotificationMessage(null), 5000)
         })
         setNewName('')
@@ -67,7 +86,7 @@ function App() {
     return (
         <div>
             <h2>Phonebook</h2>
-            {notificationMessage ? <Notification message={notificationMessage}/> : null}
+            {notificationMessage ? <Notification notification={notificationMessage}/> : null}
             <SearchFilter value={search} handleSearchChange={handleSearchChange}/>
             <PersonForm nameValue={newName} handleNameChange={handleNameChange}
                         numberValue={newNumber} handleNumberChange={handleNumberChange}
