@@ -1,13 +1,34 @@
 import CountryShort from "./CountryShort.jsx";
 import CountryDetails from "./CountryDetails.jsx";
+import {useState} from "react";
 
 const Countries = ({countries}) => {
+    const [toShowCountries, setToShowCountries] = useState([]);
+
+    function handleShowButtonClick(countryName) {
+        if (toShowCountries.includes(countryName)) {
+            setToShowCountries(toShowCountries.filter(name => name !== countryName))
+        } else {
+            setToShowCountries(toShowCountries.concat(countryName))
+        }
+    }
+
     return (
         <>
             {countries.length === 0 && (<div>No country found for this filter</div>)}
             {countries.length > 10 && (<div>Too many matches, specify another filter</div>)}
             {countries.length <= 10 && countries.length > 1
-                && countries.map(country => <CountryShort key={country.fifa} country={country}/>)}
+                && countries.map(country => {
+                        return (
+                            <>
+                                <CountryShort key={country.fifa} country={country}
+                                              handleButtonClick={handleShowButtonClick}/>
+                                {toShowCountries.includes(country.name.common) &&
+                                    <CountryDetails key={country.fifa + '2'} country={country}/>}
+                            </>
+                        )
+                    }
+                )}
             {countries.length === 1 && <CountryDetails country={countries[0]}/>}
         </>
     )
